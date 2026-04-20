@@ -13,7 +13,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         calendarMonitor = CalendarMonitor()
 
         calendarMonitor?.onUpcomingEvent = { [weak self] event in
-            self?.overlayWindowController?.show(event: event)
+            guard let self else { return }
+            self.overlayWindowController?.show(event: event, onSnooze: { [weak self] in
+                guard let id = event.eventIdentifier else { return }
+                self?.calendarMonitor?.snooze(eventID: id)
+            })
         }
 
         calendarMonitor?.requestAccessAndStart()

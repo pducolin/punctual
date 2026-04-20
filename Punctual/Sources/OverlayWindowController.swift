@@ -10,13 +10,15 @@ class OverlayWindowController: NSObject {
         super.init()
     }
 
-    func show(event: EKEvent) {
+    func show(event: EKEvent, onSnooze: @escaping () -> Void) {
         let mouseLocation = NSEvent.mouseLocation
         let screen = NSScreen.screens.first { $0.frame.contains(mouseLocation) } ?? NSScreen.screens[0]
 
-        let view = OverlayView(event: event) { [weak self] in
-            self?.window.orderOut(nil)
-        }
+        let view = OverlayView(
+            event: event,
+            onDismiss: { [weak self] in self?.window.orderOut(nil) },
+            onSnooze: { [weak self] in self?.window.orderOut(nil); onSnooze() }
+        )
 
         window.contentView = NSHostingView(rootView: view)
 
