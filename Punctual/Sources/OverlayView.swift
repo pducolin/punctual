@@ -1,3 +1,4 @@
+import AppKit
 import EventKit
 import SwiftUI
 
@@ -11,6 +12,10 @@ struct OverlayView: View {
 
     private var urgencyColor: Color {
         minutesUntil == 0 ? .red : .orange
+    }
+
+    private var meetingLink: MeetingLink? {
+        MeetingLinkDetector.detect(in: event)
     }
 
     var body: some View {
@@ -31,7 +36,7 @@ struct OverlayView: View {
                 .font(.title3.bold())
                 .lineLimit(2)
 
-            if let location = event.location, !location.isEmpty {
+            if let location = event.location, !location.isEmpty, meetingLink == nil {
                 Label(location, systemImage: "mappin")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -46,9 +51,18 @@ struct OverlayView: View {
                 }
                 Spacer()
                 Button("Got it") { onDismiss() }
+                    .buttonStyle(.bordered)
+                    .keyboardShortcut(.escape, modifiers: [])
+                    .controlSize(.large)
+                if let link = meetingLink {
+                    Button("Join \(link.service.rawValue)") {
+                        NSWorkspace.shared.open(link.url)
+                        onDismiss()
+                    }
                     .buttonStyle(.borderedProminent)
                     .keyboardShortcut(.return, modifiers: [])
                     .controlSize(.large)
+                }
             }
             .padding(.top, 4)
         }
