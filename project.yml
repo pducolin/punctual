@@ -1,0 +1,28 @@
+name: Punctual
+options:
+  bundleIdPrefix: com.pducolin
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+
+targets:
+  Punctual:
+    type: application
+    platform: macOS
+    sources:
+      - path: Punctual/Sources
+    info:
+      path: Punctual/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: Punctual
+        LSUIElement: true
+        NSCalendarsFullAccessUsageDescription: "Punctual reads your calendar to remind you about upcoming meetings."
+    entitlements:
+      path: Punctual/Resources/Punctual.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.pducolin.Punctual
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        CODE_SIGN_IDENTITY: "-"
+        INFOPLIST_FILE: Punctual/Resources/Info.plist
