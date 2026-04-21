@@ -4,10 +4,16 @@ import Foundation
 class CalendarMonitor {
     private let store = EKEventStore()
     private var timer: Timer?
-    private var shownEventIDs: Set<String> = []
+    private var dismissedEventIDs: Set<String> = []
+    private var snoozedEvents: [String: Date] = [:]
 
     var onUpcomingEvent: ((EKEvent) -> Void)?
     var warningMinutes = 2
+
+    func snooze(eventID: String, for duration: TimeInterval = 5 * 60) {
+        snoozedEvents[eventID] = Date().addingTimeInterval(duration)
+        dismissedEventIDs.remove(eventID)
+    }
 
     func requestAccessAndStart() {
         store.requestFullAccessToEvents { [weak self] granted, _ in
@@ -43,11 +49,15 @@ class CalendarMonitor {
         let predicate = store.predicateForEvents(withStart: now, end: windowEnd, calendars: nil)
         let events = store.events(matching: predicate)
 
+        snoozedEvents = snoozedEvents.filter { $0.value > now }
+
         for event in events where !event.isAllDay {
-            guard let id = event.eventIdentifier, !shownEventIDs.contains(id) else { continue }
+            guard let id = event.eventIdentifier else { continue }
+            guard !dismissedEventIDs.contains(id) else { continue }
+            guard snoozedEvents[id] == nil else { continue }
             let secondsUntil = event.startDate.timeIntervalSinceNow
             guard secondsUntil <= lookAheadSeconds else { continue }
-            shownEventIDs.insert(id)
+            dismissedEventIDs.insert(id)
             onUpcomingEvent?(event)
         }
     }

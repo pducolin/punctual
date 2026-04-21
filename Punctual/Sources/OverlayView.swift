@@ -5,6 +5,7 @@ import SwiftUI
 struct OverlayView: View {
     let event: EKEvent
     let onDismiss: () -> Void
+    let onSnooze: () -> Void
 
     private var minutesUntil: Int {
         max(0, Int(event.startDate.timeIntervalSinceNow / 60))
@@ -50,11 +51,14 @@ struct OverlayView: View {
                         .foregroundStyle(.tertiary)
                 }
                 Spacer()
-                Button("Got it") { onDismiss() }
+                Button("Snooze 5 min") { onSnooze() }
                     .buttonStyle(.bordered)
-                    .keyboardShortcut(.escape, modifiers: [])
                     .controlSize(.large)
                 if let link = meetingLink {
+                    Button("Got it") { onDismiss() }
+                        .buttonStyle(.bordered)
+                        .keyboardShortcut(.escape, modifiers: [])
+                        .controlSize(.large)
                     Button("Join \(link.service.rawValue)") {
                         NSWorkspace.shared.open(link.url)
                         onDismiss()
@@ -62,6 +66,11 @@ struct OverlayView: View {
                     .buttonStyle(.borderedProminent)
                     .keyboardShortcut(.return, modifiers: [])
                     .controlSize(.large)
+                } else {
+                    Button("Got it") { onDismiss() }
+                        .buttonStyle(.borderedProminent)
+                        .keyboardShortcut(.return, modifiers: [])
+                        .controlSize(.large)
                 }
             }
             .padding(.top, 4)
