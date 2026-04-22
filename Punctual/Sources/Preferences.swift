@@ -1,18 +1,30 @@
 import Foundation
 
 enum Preferences {
-    private static let warningMinutesKey = "warningMinutes"
+    private static let warningMinutesListKey = "warningMinutesList"
     private static let disabledCalendarIDsKey = "disabledCalendarIDs"
     private static let soundEnabledKey = "soundEnabled"
 
-    static var warningMinutes: Int {
+    static var warningMinutesList: Set<Int> {
         get {
-            let v = UserDefaults.standard.integer(forKey: warningMinutesKey)
-            return v > 0 ? v : 2
+            guard let arr = UserDefaults.standard.array(forKey: warningMinutesListKey) as? [Int],
+                  !arr.isEmpty else { return [2] }
+            return Set(arr)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: warningMinutesKey)
+            UserDefaults.standard.set(Array(newValue), forKey: warningMinutesListKey)
         }
+    }
+
+    static func toggleWarningMinutes(_ minutes: Int) {
+        var list = warningMinutesList
+        if list.contains(minutes) {
+            guard list.count > 1 else { return } // always keep at least one active
+            list.remove(minutes)
+        } else {
+            list.insert(minutes)
+        }
+        warningMinutesList = list
     }
 
     static var disabledCalendarIDs: Set<String> {
