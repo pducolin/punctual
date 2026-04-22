@@ -10,14 +10,14 @@ class OverlayWindowController: NSObject {
         super.init()
     }
 
-    func show(event: EKEvent, onSnooze: @escaping () -> Void) {
+    func show(event: EKEvent, onSnooze: @escaping (_ minutes: Int) -> Void) {
         let mouseLocation = NSEvent.mouseLocation
         let screen = NSScreen.screens.first { $0.frame.contains(mouseLocation) } ?? NSScreen.screens[0]
 
         let view = OverlayView(
             event: event,
             onDismiss: { [weak self] in self?.window.orderOut(nil) },
-            onSnooze: { [weak self] in self?.window.orderOut(nil); onSnooze() }
+            onSnooze: { [weak self] minutes in self?.window.orderOut(nil); onSnooze(minutes) }
         )
 
         window.contentView = NSHostingView(rootView: view)
@@ -30,6 +30,10 @@ class OverlayWindowController: NSObject {
         window.setFrame(CGRect(origin: origin, size: windowSize), display: true)
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
+
+        if Preferences.soundEnabled {
+            NSSound(named: .init("Basso"))?.play()
+        }
     }
 }
 

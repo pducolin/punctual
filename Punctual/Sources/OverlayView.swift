@@ -5,7 +5,7 @@ import SwiftUI
 struct OverlayView: View {
     let event: EKEvent
     let onDismiss: () -> Void
-    let onSnooze: () -> Void
+    let onSnooze: (_ minutes: Int) -> Void
 
     private var minutesUntil: Int {
         max(0, Int(event.startDate.timeIntervalSinceNow / 60))
@@ -51,7 +51,10 @@ struct OverlayView: View {
                         .foregroundStyle(.tertiary)
                 }
                 Spacer()
-                Button("Snooze 5 min") { onSnooze() }
+                Button("1 min") { onSnooze(1) }
+                    .buttonStyle(.bordered)
+                    .controlSize(.large)
+                Button("5 min") { onSnooze(5) }
                     .buttonStyle(.bordered)
                     .controlSize(.large)
                 if let link = meetingLink {

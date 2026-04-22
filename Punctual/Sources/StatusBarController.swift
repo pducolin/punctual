@@ -7,6 +7,7 @@ class StatusBarController: NSObject, NSMenuDelegate {
     private var reminderMenuItems: [NSMenuItem] = []
     private var dynamicMenuItems: [NSMenuItem] = []
     private var calendarsMenuItem = NSMenuItem(title: "Calendars", action: nil, keyEquivalent: "")
+    private var soundMenuItem = NSMenuItem(title: "Sound", action: nil, keyEquivalent: "")
     private var countdownTimer: Timer?
 
     var nextEventsProvider: (() -> [EKEvent])?
@@ -49,6 +50,10 @@ class StatusBarController: NSObject, NSMenuDelegate {
         calendarsMenuItem.submenu = NSMenu()
         menu.addItem(calendarsMenuItem)
 
+        soundMenuItem.action = #selector(toggleSound)
+        soundMenuItem.target = self
+        menu.addItem(soundMenuItem)
+
         menu.addItem(.separator())
         menu.addItem(NSMenuItem(title: "Quit Punctual", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
 
@@ -81,6 +86,7 @@ class StatusBarController: NSObject, NSMenuDelegate {
         let current = Preferences.warningMinutes
         reminderMenuItems.forEach { $0.state = $0.tag == current ? .on : .off }
         updateCalendarsSubmenu()
+        soundMenuItem.state = Preferences.soundEnabled ? .on : .off
     }
 
     private func updateCalendarsSubmenu() {
@@ -162,5 +168,9 @@ class StatusBarController: NSObject, NSMenuDelegate {
 
     @objc private func setWarningTime(_ sender: NSMenuItem) {
         Preferences.warningMinutes = sender.tag
+    }
+
+    @objc private func toggleSound() {
+        Preferences.soundEnabled.toggle()
     }
 }
