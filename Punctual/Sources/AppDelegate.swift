@@ -16,6 +16,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self?.calendarMonitor?.upcomingEvents() ?? []
         }
 
+        statusBarController?.calendarsProvider = { [weak self] in
+            self?.calendarMonitor?.availableCalendars() ?? []
+        }
+
         calendarMonitor?.onUpcomingEvent = { [weak self] event in
             guard let self else { return }
             self.overlayWindowController?.show(event: event, onSnooze: { [weak self] in

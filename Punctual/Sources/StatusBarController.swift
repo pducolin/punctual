@@ -6,9 +6,11 @@ class StatusBarController: NSObject, NSMenuDelegate {
     private let menu = NSMenu()
     private var reminderMenuItems: [NSMenuItem] = []
     private var dynamicMenuItems: [NSMenuItem] = []
+    private var calendarsMenuItem = NSMenuItem(title: "Calendars", action: nil, keyEquivalent: "")
     private var countdownTimer: Timer?
 
     var nextEventsProvider: (() -> [EKEvent])?
+    var calendarsProvider: (() -> [EKCalendar])?
 
     override init() {
         super.init()
@@ -44,6 +46,9 @@ class StatusBarController: NSObject, NSMenuDelegate {
         remindItem.submenu = remindMenu
         menu.addItem(remindItem)
 
+        calendarsMenuItem.submenu = NSMenu()
+        menu.addItem(calendarsMenuItem)
+
         menu.addItem(.separator())
         menu.addItem(NSMenuItem(title: "Quit Punctual", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
 
@@ -75,6 +80,27 @@ class StatusBarController: NSObject, NSMenuDelegate {
         updateCountdown()
         let current = Preferences.warningMinutes
         reminderMenuItems.forEach { $0.state = $0.tag == current ? .on : .off }
+        updateCalendarsSubmenu()
+    }
+
+    private func updateCalendarsSubmenu() {
+        guard let submenu = calendarsMenuItem.submenu else { return }
+        submenu.removeAllItems()
+        let calendars = calendarsProvider?() ?? []
+        let disabled = Preferences.disabledCalendarIDs
+        for calendar in calendars {
+            let item = NSMenuItem(title: calendar.title, action: #selector(toggleCalendar(_:)), keyEquivalent: "")
+            item.representedObject = calendar.calendarIdentifier
+            item.state = disabled.contains(calendar.calendarIdentifier) ? .off : .on
+            item.target = self
+            submenu.addItem(item)
+        }
+        calendarsMenuItem.isEnabled = !calendars.isEmpty
+    }
+
+    @objc private func toggleCalendar(_ sender: NSMenuItem) {
+        guard let id = sender.representedObject as? String else { return }
+        Preferences.toggleCalendar(id: id)
     }
 
     private func updateUpcomingSection() {
