@@ -19,6 +19,16 @@ struct OverlayView: View {
         MeetingLinkDetector.detect(in: event)
     }
 
+    private var notesSnippet: String? {
+        guard let notes = event.notes, !notes.isEmpty else { return nil }
+        let plain = notes.replacingOccurrences(of: "<[^>]+>", with: " ", options: .regularExpression)
+        guard let line = plain.components(separatedBy: .newlines)
+            .map({ $0.trimmingCharacters(in: .whitespaces) })
+            .first(where: { !$0.isEmpty })
+        else { return nil }
+        return line.count > 120 ? String(line.prefix(120)) + "…" : line
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 6) {
@@ -42,6 +52,13 @@ struct OverlayView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
+            }
+
+            if let snippet = notesSnippet {
+                Text(snippet)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
             }
 
             HStack {
