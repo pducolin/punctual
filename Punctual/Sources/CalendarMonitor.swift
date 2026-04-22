@@ -8,7 +8,6 @@ class CalendarMonitor {
     private var snoozedEvents: [String: Date] = [:]
 
     var onUpcomingEvent: ((EKEvent) -> Void)?
-    var warningMinutes = 2
 
     func snooze(eventID: String, for duration: TimeInterval = 5 * 60) {
         snoozedEvents[eventID] = Date().addingTimeInterval(duration)
@@ -43,7 +42,7 @@ class CalendarMonitor {
 
     private func checkUpcomingEvents() {
         let now = Date()
-        let lookAheadSeconds = TimeInterval(warningMinutes * 60)
+        let lookAheadSeconds = TimeInterval(Preferences.warningMinutes * 60)
         let windowEnd = now.addingTimeInterval(lookAheadSeconds + 60)
 
         let predicate = store.predicateForEvents(withStart: now, end: windowEnd, calendars: nil)
