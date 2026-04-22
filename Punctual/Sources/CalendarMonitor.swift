@@ -15,13 +15,19 @@ class CalendarMonitor {
         dismissedEventIDs.remove(eventID)
     }
 
+    func availableCalendars() -> [EKCalendar] {
+        guard isAuthorized else { return [] }
+        return store.calendars(for: .event).sorted { $0.title < $1.title }
+    }
+
     func upcomingEvents(withinHours hours: Int = 2) -> [EKEvent] {
         guard isAuthorized else { return [] }
+        let disabled = Preferences.disabledCalendarIDs
         let now = Date()
         let end = now.addingTimeInterval(TimeInterval(hours * 3600))
         let predicate = store.predicateForEvents(withStart: now, end: end, calendars: nil)
         return store.events(matching: predicate)
-            .filter { !$0.isAllDay }
+            .filter { !$0.isAllDay && !disabled.contains($0.calendar?.calendarIdentifier ?? "") }
             .sorted { $0.startDate < $1.startDate }
     }
 
@@ -62,10 +68,12 @@ class CalendarMonitor {
 
         snoozedEvents = snoozedEvents.filter { $0.value > now }
 
+        let disabledCalendars = Preferences.disabledCalendarIDs
         for event in events where !event.isAllDay {
             guard let id = event.eventIdentifier else { continue }
             guard !dismissedEventIDs.contains(id) else { continue }
             guard snoozedEvents[id] == nil else { continue }
+            guard !disabledCalendars.contains(event.calendar?.calendarIdentifier ?? "") else { continue }
             let secondsUntil = event.startDate.timeIntervalSinceNow
             guard secondsUntil <= lookAheadSeconds else { continue }
             dismissedEventIDs.insert(id)
