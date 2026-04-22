@@ -6,6 +6,11 @@ enum MeetingService: String {
     case googleMeet = "Google Meet"
     case teams = "Teams"
     case webex = "Webex"
+    case around = "Around"
+    case whereby = "Whereby"
+    case jitsi = "Jitsi"
+    case bluejeans = "BlueJeans"
+    case gotomeeting = "GoToMeeting"
 }
 
 struct MeetingLink {
@@ -20,6 +25,11 @@ struct MeetingLinkDetector {
         (#"https://teams\.microsoft\.com/l/meetup-join/[^\s"'>]+"#, .teams),
         (#"https://teams\.live\.com/meet/[^\s"'>]+"#, .teams),
         (#"https://[\w-]+\.webex\.com/[^\s"'>]+"#, .webex),
+        (#"https://meet\.around\.co/[^\s"'>]+"#, .around),
+        (#"https://[\w-]*whereby\.com/[^\s"'>]+"#, .whereby),
+        (#"https://meet\.jit\.si/[^\s"'>]+"#, .jitsi),
+        (#"https://bluejeans\.com/[^\s"'>]+"#, .bluejeans),
+        (#"https://global\.gotomeeting\.com/join/[^\s"'>]+"#, .gotomeeting),
     ]
 
     static func detect(in event: EKEvent) -> MeetingLink? {
