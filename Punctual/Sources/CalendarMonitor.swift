@@ -6,6 +6,7 @@ class CalendarMonitor {
     private var timer: Timer?
     private var dismissedEventIDs: Set<String> = []
     private var snoozedEvents: [String: Date] = [:]
+    private(set) var isAuthorized = false
 
     var onUpcomingEvent: ((EKEvent) -> Void)?
 
@@ -14,10 +15,21 @@ class CalendarMonitor {
         dismissedEventIDs.remove(eventID)
     }
 
+    func upcomingEvents(withinHours hours: Int = 2) -> [EKEvent] {
+        guard isAuthorized else { return [] }
+        let now = Date()
+        let end = now.addingTimeInterval(TimeInterval(hours * 3600))
+        let predicate = store.predicateForEvents(withStart: now, end: end, calendars: nil)
+        return store.events(matching: predicate)
+            .filter { !$0.isAllDay }
+            .sorted { $0.startDate < $1.startDate }
+    }
+
     func requestAccessAndStart() {
         store.requestFullAccessToEvents { [weak self] granted, _ in
             guard granted else { return }
             DispatchQueue.main.async {
+                self?.isAuthorized = true
                 self?.startPolling()
                 NotificationCenter.default.addObserver(
                     self as Any,
