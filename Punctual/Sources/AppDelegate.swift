@@ -22,9 +22,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         calendarMonitor?.onUpcomingEvent = { [weak self] event in
             guard let self else { return }
-            self.overlayWindowController?.show(event: event, onSnooze: { [weak self] in
+            self.overlayWindowController?.show(event: event, onSnooze: { [weak self] minutes in
                 guard let id = event.eventIdentifier else { return }
-                self?.calendarMonitor?.snooze(eventID: id)
+                self?.calendarMonitor?.snooze(eventID: id, for: TimeInterval(minutes * 60))
             })
         }
 

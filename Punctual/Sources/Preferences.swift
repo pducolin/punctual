@@ -3,6 +3,7 @@ import Foundation
 enum Preferences {
     private static let warningMinutesKey = "warningMinutes"
     private static let disabledCalendarIDsKey = "disabledCalendarIDs"
+    private static let soundEnabledKey = "soundEnabled"
 
     static var warningMinutes: Int {
         get {
@@ -28,5 +29,11 @@ enum Preferences {
         var ids = disabledCalendarIDs
         if ids.contains(id) { ids.remove(id) } else { ids.insert(id) }
         disabledCalendarIDs = ids
+    }
+
+    // Defaults to true — use object(forKey:) so we can distinguish unset from explicit false
+    static var soundEnabled: Bool {
+        get { UserDefaults.standard.object(forKey: soundEnabledKey) as? Bool ?? true }
+        set { UserDefaults.standard.set(newValue, forKey: soundEnabledKey) }
     }
 }
