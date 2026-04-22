@@ -39,7 +39,7 @@ class StatusBarController: NSObject, NSMenuDelegate {
         let remindMenu = NSMenu()
         for minutes in [1, 2, 5, 10] {
             let label = minutes == 1 ? "1 minute before" : "\(minutes) minutes before"
-            let item = NSMenuItem(title: label, action: #selector(setWarningTime(_:)), keyEquivalent: "")
+            let item = NSMenuItem(title: label, action: #selector(toggleWarningTime(_:)), keyEquivalent: "")
             item.tag = minutes
             item.target = self
             remindMenu.addItem(item)
@@ -88,8 +88,8 @@ class StatusBarController: NSObject, NSMenuDelegate {
     func menuWillOpen(_ menu: NSMenu) {
         updateUpcomingSection()
         updateCountdown()
-        let current = Preferences.warningMinutes
-        reminderMenuItems.forEach { $0.state = $0.tag == current ? .on : .off }
+        let selected = Preferences.warningMinutesList
+        reminderMenuItems.forEach { $0.state = selected.contains($0.tag) ? .on : .off }
         updateCalendarsSubmenu()
         soundMenuItem.state = Preferences.soundEnabled ? .on : .off
         launchAtLoginMenuItem.state = LaunchAtLogin.isEnabled ? .on : .off
@@ -172,8 +172,8 @@ class StatusBarController: NSObject, NSMenuDelegate {
         NSWorkspace.shared.open(url)
     }
 
-    @objc private func setWarningTime(_ sender: NSMenuItem) {
-        Preferences.warningMinutes = sender.tag
+    @objc private func toggleWarningTime(_ sender: NSMenuItem) {
+        Preferences.toggleWarningMinutes(sender.tag)
     }
 
     @objc private func toggleSound() {

@@ -4,7 +4,7 @@ import Foundation
 class CalendarMonitor {
     private let store = EKEventStore()
     private var timer: Timer?
-    private var dismissedEventIDs: Set<String> = []
+    private var shownReminders: [String: Set<Int>] = [:]
     private var snoozedEvents: [String: Date] = [:]
     private(set) var isAuthorized = false
 
@@ -12,7 +12,7 @@ class CalendarMonitor {
 
     func snooze(eventID: String, for duration: TimeInterval = 5 * 60) {
         snoozedEvents[eventID] = Date().addingTimeInterval(duration)
-        dismissedEventIDs.remove(eventID)
+        shownReminders.removeValue(forKey: eventID)
     }
 
     func availableCalendars() -> [EKCalendar] {
@@ -60,8 +60,9 @@ class CalendarMonitor {
 
     private func checkUpcomingEvents() {
         let now = Date()
-        let lookAheadSeconds = TimeInterval(Preferences.warningMinutes * 60)
-        let windowEnd = now.addingTimeInterval(lookAheadSeconds + 60)
+        let thresholds = Preferences.warningMinutesList.sorted(by: >)
+        let maxLookAhead = TimeInterval((thresholds.first ?? 2) * 60)
+        let windowEnd = now.addingTimeInterval(maxLookAhead + 60)
 
         let predicate = store.predicateForEvents(withStart: now, end: windowEnd, calendars: nil)
         let events = store.events(matching: predicate)
@@ -71,13 +72,17 @@ class CalendarMonitor {
         let disabledCalendars = Preferences.disabledCalendarIDs
         for event in events where !event.isAllDay {
             guard let id = event.eventIdentifier else { continue }
-            guard !dismissedEventIDs.contains(id) else { continue }
             guard snoozedEvents[id] == nil else { continue }
             guard !disabledCalendars.contains(event.calendar?.calendarIdentifier ?? "") else { continue }
             let secondsUntil = event.startDate.timeIntervalSinceNow
-            guard secondsUntil <= lookAheadSeconds else { continue }
-            dismissedEventIDs.insert(id)
-            onUpcomingEvent?(event)
+            // Fire for the largest threshold not yet shown that this event falls within
+            for threshold in thresholds {
+                guard secondsUntil <= TimeInterval(threshold * 60) else { continue }
+                guard !(shownReminders[id]?.contains(threshold) ?? false) else { continue }
+                shownReminders[id, default: []].insert(threshold)
+                onUpcomingEvent?(event)
+                break
+            }
         }
     }
 }
