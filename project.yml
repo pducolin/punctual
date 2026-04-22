@@ -19,6 +19,8 @@ targets:
         NSCalendarsFullAccessUsageDescription: "Punctual reads your calendar to remind you about upcoming meetings."
     entitlements:
       path: Punctual/Resources/Punctual.entitlements
+    dependencies:
+      - sdk: ServiceManagement.framework
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.pducolin.Punctual
