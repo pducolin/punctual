@@ -21,6 +21,9 @@ targets:
       path: Punctual/Resources/Punctual.entitlements
     dependencies:
       - sdk: ServiceManagement.framework
+      - target: PunctualWidget
+        embed: true
+        link: false
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.pducolin.Punctual
@@ -28,3 +31,24 @@ targets:
         MACOSX_DEPLOYMENT_TARGET: "14.0"
         CODE_SIGN_IDENTITY: "-"
         INFOPLIST_FILE: Punctual/Resources/Info.plist
+
+  PunctualWidget:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: PunctualWidget/Sources
+    info:
+      properties:
+        CFBundleDisplayName: PunctualWidget
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+        NSCalendarsFullAccessUsageDescription: "Punctual reads your calendar to show upcoming meetings."
+    dependencies:
+      - sdk: WidgetKit.framework
+      - sdk: SwiftUI.framework
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.pducolin.Punctual.PunctualWidget
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        CODE_SIGN_IDENTITY: "-"
