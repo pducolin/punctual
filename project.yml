@@ -38,6 +38,7 @@ targets:
     sources:
       - path: PunctualWidget/Sources
     info:
+      path: PunctualWidget/Resources/Info.plist
       properties:
         CFBundleDisplayName: PunctualWidget
         NSExtension:
