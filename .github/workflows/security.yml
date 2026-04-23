@@ -1,0 +1,111 @@
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  security:
+    name: Security checks
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check no dependency managers introduced
+        run: |
+          banned=(
+            Package.swift
+            Podfile
+            Cartfile
+            Gemfile
+            requirements.txt
+            package.json
+          )
+          found=0
+          for file in "${banned[@]}"; do
+            if find . -name "$file" -not -path './.git/*' | grep -q .; then
+              echo "❌  Found $file — third-party dependency manager not allowed"
+              found=1
+            fi
+          done
+          if [ $found -eq 1 ]; then exit 1; fi
+          echo "✅  No dependency managers found"
+
+      - name: Select Xcode
+        run: sudo xcode-select -s $(ls -d /Applications/Xcode_*.app | sort -V | tail -1)
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Static analysis
+        run: |
+          xcodebuild analyze \
+            -project Punctual.xcodeproj \
+            -scheme Punctual \
+            -configuration Debug \
+            -destination 'platform=macOS,arch=arm64' \
+            -derivedDataPath .build \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tee analyze.log
+          if grep -qE "warning: \[.*analyzer.*\]|clang-analyzer" analyze.log; then
+            echo "❌  Static analyzer warnings detected — see log above"
+            exit 1
+          fi
+          echo "✅  Static analysis clean"
+
+      - name: Generate SBOM
+        run: |
+          XCODE_VER=$(xcodebuild -version | head -1 | awk '{print $2}')
+          SWIFT_VER=$(swift --version 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          cat > sbom.json <<EOF
+          {
+            "bomFormat": "CycloneDX",
+            "specVersion": "1.4",
+            "metadata": {
+              "timestamp": "${TIMESTAMP}",
+              "gitSHA": "${GITHUB_SHA}",
+              "tools": [
+                { "name": "Xcode", "version": "${XCODE_VER}" },
+                { "name": "Swift", "version": "${SWIFT_VER}" }
+              ],
+              "component": {
+                "type": "application",
+                "name": "Punctual",
+                "bundleID": "com.pducolin.Punctual",
+                "platform": "macOS 14.0+"
+              }
+            },
+            "components": [
+              { "type": "library", "name": "AppKit",          "publisher": "Apple Inc.", "scope": "required" },
+              { "type": "library", "name": "SwiftUI",         "publisher": "Apple Inc.", "scope": "required" },
+              { "type": "library", "name": "EventKit",        "publisher": "Apple Inc.", "scope": "required" },
+              { "type": "library", "name": "Foundation",      "publisher": "Apple Inc.", "scope": "required" },
+              { "type": "library", "name": "ServiceManagement","publisher": "Apple Inc.", "scope": "required" },
+              { "type": "library", "name": "WidgetKit",       "publisher": "Apple Inc.", "scope": "required" }
+            ],
+            "dependencies": []
+          }
+          EOF
+          echo "✅  SBOM generated"
+          cat sbom.json
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-${{ github.sha }}
+          path: sbom.json
+          retention-days: 90
