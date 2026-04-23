@@ -32,6 +32,7 @@ targets:
         CODE_SIGN_IDENTITY: "-"
         INFOPLIST_FILE: Punctual/Resources/Info.plist
         ENABLE_HARDENED_RUNTIME: YES
+        ENABLE_TESTABILITY: YES
 
   PunctualWidget:
     type: app-extension
@@ -55,3 +56,34 @@ targets:
         MACOSX_DEPLOYMENT_TARGET: "14.0"
         CODE_SIGN_IDENTITY: "-"
         ENABLE_HARDENED_RUNTIME: YES
+
+  PunctualTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: PunctualTests/Sources
+    dependencies:
+      - target: Punctual
+        embed: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.pducolin.PunctualTests
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        CODE_SIGN_IDENTITY: "-"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Punctual.app/Contents/MacOS/Punctual"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+
+schemes:
+  Punctual:
+    build:
+      targets:
+        Punctual: all
+        PunctualTests: [testing]
+    test:
+      targets:
+        - PunctualTests
+    run:
+      config: Debug
+    archive:
+      config: Release

@@ -11,27 +11,121 @@
 		43F9414E8059746ED3EBDAD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AD204CAF84547DA4EAD7F6 /* AppDelegate.swift */; };
 		486D6378DA016078C42B4FCB /* PunctualApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B36589808339C855705C12 /* PunctualApp.swift */; };
 		6DE9F5CD11E5F0970B96F277 /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31D076BECB83B88A3C33147 /* OverlayView.swift */; };
+		6FAD1F1C1041E9D314F48D06 /* LaunchAtLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F43D2519C21CABFC11FA13 /* LaunchAtLogin.swift */; };
+		7895438A32479D182347CC46 /* PreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98042A6CC636569A6C46BC1E /* PreferencesTests.swift */; };
+		80CDBC385B7883296914F18C /* PunctualWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A721FF2FEC739E8EAEFD056 /* PunctualWidget.swift */; };
+		940DBCBA3B6D51FBE60EC58D /* MeetingLinkDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B541D32B89A316328D1AE3FF /* MeetingLinkDetectorTests.swift */; };
 		9F4E033BB7AC28C7D16F1062 /* CalendarMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30EF4D64049F70ED639CFA3 /* CalendarMonitor.swift */; };
+		B4744B1261A90AF405DD7E46 /* PunctualWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 74B08FEA74715C0EE42B4F1E /* PunctualWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C90CC5E445D4F85B1D6E8899 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68DA5DA4D67820407DCF34B1 /* WidgetKit.framework */; };
+		CD40CE2EA4F8AB62F5CADB97 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 970AACD15881CA9B20442A59 /* SwiftUI.framework */; };
+		DB34FCBDB7C25A0508EB6A5B /* PunctualWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE4AA8E189A49AC16A98182 /* PunctualWidgetBundle.swift */; };
+		EAD1F71E33AC5F424E46F822 /* MeetingLinkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DD417EEEA674489701F9E2 /* MeetingLinkDetector.swift */; };
+		EC604AD9A61A4217BFC15728 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B4E60DB9CE32C519E45E170 /* ServiceManagement.framework */; };
+		F92F9E0D9E4098EEFFF5F9A6 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A73302B4E13DB376360B70B /* Preferences.swift */; };
 		F99FAB063B32A9151EB51D8F /* OverlayWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194BC4A4783BAEDE883E6FF2 /* OverlayWindowController.swift */; };
+		F9D79157D509F5B45ABE9B3E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 74B3FE41DC4281DBBCDF2C85 /* README.md */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7D8C3C6EC755D0BF266F489A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66C0518E92BD01AFC1F4DED9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1171AAFADBD850C1482C3983;
+			remoteInfo = Punctual;
+		};
+		C48D05C4D46856DDE1FAF12F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66C0518E92BD01AFC1F4DED9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A3EC3764FFB969BFDF7979BF;
+			remoteInfo = PunctualWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A8F44CC1665E725258BE2210 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B4744B1261A90AF405DD7E46 /* PunctualWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		194BC4A4783BAEDE883E6FF2 /* OverlayWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowController.swift; sourceTree = "<group>"; };
 		26B36589808339C855705C12 /* PunctualApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PunctualApp.swift; sourceTree = "<group>"; };
+		442939134F87A2667E67B941 /* PunctualTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PunctualTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FE4AA8E189A49AC16A98182 /* PunctualWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PunctualWidgetBundle.swift; sourceTree = "<group>"; };
+		51F43D2519C21CABFC11FA13 /* LaunchAtLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLogin.swift; sourceTree = "<group>"; };
 		53AD204CAF84547DA4EAD7F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		5A73302B4E13DB376360B70B /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		5B4E60DB9CE32C519E45E170 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
+		68DA5DA4D67820407DCF34B1 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		74B08FEA74715C0EE42B4F1E /* PunctualWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PunctualWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		74B3FE41DC4281DBBCDF2C85 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8FF45C03C45F2CA8BFD49DDC /* Punctual.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Punctual.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		970AACD15881CA9B20442A59 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		98042A6CC636569A6C46BC1E /* PreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTests.swift; sourceTree = "<group>"; };
+		9A721FF2FEC739E8EAEFD056 /* PunctualWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PunctualWidget.swift; sourceTree = "<group>"; };
+		B541D32B89A316328D1AE3FF /* MeetingLinkDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingLinkDetectorTests.swift; sourceTree = "<group>"; };
 		C30EF4D64049F70ED639CFA3 /* CalendarMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarMonitor.swift; sourceTree = "<group>"; };
 		D4181F609644752C8E0063E9 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		E31D076BECB83B88A3C33147 /* OverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
+		E6DD417EEEA674489701F9E2 /* MeetingLinkDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingLinkDetector.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		4B75E5145526DC2187AA1D6D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC604AD9A61A4217BFC15728 /* ServiceManagement.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B9B811919400BD0282715B8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C90CC5E445D4F85B1D6E8899 /* WidgetKit.framework in Frameworks */,
+				CD40CE2EA4F8AB62F5CADB97 /* SwiftUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
+		19DB5DE2972E376DDA0EE01D /* PunctualWidget */ = {
+			isa = PBXGroup;
+			children = (
+				B9C58F61DB2A85FEBCF01BA8 /* Sources */,
+			);
+			path = PunctualWidget;
+			sourceTree = "<group>";
+		};
 		427938BCE59C06D02E252C66 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				8FF45C03C45F2CA8BFD49DDC /* Punctual.app */,
+				442939134F87A2667E67B941 /* PunctualTests.xctest */,
+				74B08FEA74715C0EE42B4F1E /* PunctualWidget.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		8BCD2D75B11F1CAB2DCEEFAB /* PunctualTests */ = {
+			isa = PBXGroup;
+			children = (
+				F1246225E369C68DABE9C426 /* Sources */,
+			);
+			path = PunctualTests;
 			sourceTree = "<group>";
 		};
 		B03A34C9C19AF0F0B1C60DFD /* Sources */ = {
@@ -39,12 +133,35 @@
 			children = (
 				53AD204CAF84547DA4EAD7F6 /* AppDelegate.swift */,
 				C30EF4D64049F70ED639CFA3 /* CalendarMonitor.swift */,
+				51F43D2519C21CABFC11FA13 /* LaunchAtLogin.swift */,
+				E6DD417EEEA674489701F9E2 /* MeetingLinkDetector.swift */,
 				E31D076BECB83B88A3C33147 /* OverlayView.swift */,
 				194BC4A4783BAEDE883E6FF2 /* OverlayWindowController.swift */,
+				5A73302B4E13DB376360B70B /* Preferences.swift */,
 				26B36589808339C855705C12 /* PunctualApp.swift */,
+				74B3FE41DC4281DBBCDF2C85 /* README.md */,
 				D4181F609644752C8E0063E9 /* StatusBarController.swift */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		B9C58F61DB2A85FEBCF01BA8 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				9A721FF2FEC739E8EAEFD056 /* PunctualWidget.swift */,
+				4FE4AA8E189A49AC16A98182 /* PunctualWidgetBundle.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		CDF75F4D5928C70F27C1354D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5B4E60DB9CE32C519E45E170 /* ServiceManagement.framework */,
+				970AACD15881CA9B20442A59 /* SwiftUI.framework */,
+				68DA5DA4D67820407DCF34B1 /* WidgetKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		DD93B477491F425BA046FEDF /* Punctual */ = {
@@ -55,10 +172,22 @@
 			path = Punctual;
 			sourceTree = "<group>";
 		};
+		F1246225E369C68DABE9C426 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				B541D32B89A316328D1AE3FF /* MeetingLinkDetectorTests.swift */,
+				98042A6CC636569A6C46BC1E /* PreferencesTests.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
 		F40C506F5388CB16023CAF1B = {
 			isa = PBXGroup;
 			children = (
 				DD93B477491F425BA046FEDF /* Punctual */,
+				8BCD2D75B11F1CAB2DCEEFAB /* PunctualTests */,
+				19DB5DE2972E376DDA0EE01D /* PunctualWidget */,
+				CDF75F4D5928C70F27C1354D /* Frameworks */,
 				427938BCE59C06D02E252C66 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -71,10 +200,14 @@
 			buildConfigurationList = 4A92BCAC35627B7C3D0E198E /* Build configuration list for PBXNativeTarget "Punctual" */;
 			buildPhases = (
 				AE0A1AE39752D09A12903B37 /* Sources */,
+				1659BDAA2CDAB610F5E99618 /* Resources */,
+				4B75E5145526DC2187AA1D6D /* Frameworks */,
+				A8F44CC1665E725258BE2210 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				0439B42FFB20BFCEB84C3ADB /* PBXTargetDependency */,
 			);
 			name = Punctual;
 			packageProductDependencies = (
@@ -82,6 +215,42 @@
 			productName = Punctual;
 			productReference = 8FF45C03C45F2CA8BFD49DDC /* Punctual.app */;
 			productType = "com.apple.product-type.application";
+		};
+		27537794879E0E9E59667429 /* PunctualTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 330E98548ABE9EE7141E305A /* Build configuration list for PBXNativeTarget "PunctualTests" */;
+			buildPhases = (
+				B73A0C3347E46F1A98B338EA /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				697626382816E73DAE5C02B7 /* PBXTargetDependency */,
+			);
+			name = PunctualTests;
+			packageProductDependencies = (
+			);
+			productName = PunctualTests;
+			productReference = 442939134F87A2667E67B941 /* PunctualTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A3EC3764FFB969BFDF7979BF /* PunctualWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 508729BB6D81C29F96849CCE /* Build configuration list for PBXNativeTarget "PunctualWidget" */;
+			buildPhases = (
+				5CEAE905E9873BF9D8D4E3DB /* Sources */,
+				5B9B811919400BD0282715B8 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PunctualWidget;
+			packageProductDependencies = (
+			);
+			productName = PunctualWidget;
+			productReference = 74B08FEA74715C0EE42B4F1E /* PunctualWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -109,25 +278,72 @@
 			projectRoot = "";
 			targets = (
 				1171AAFADBD850C1482C3983 /* Punctual */,
+				27537794879E0E9E59667429 /* PunctualTests */,
+				A3EC3764FFB969BFDF7979BF /* PunctualWidget */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		1659BDAA2CDAB610F5E99618 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9D79157D509F5B45ABE9B3E /* README.md in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		5CEAE905E9873BF9D8D4E3DB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80CDBC385B7883296914F18C /* PunctualWidget.swift in Sources */,
+				DB34FCBDB7C25A0508EB6A5B /* PunctualWidgetBundle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AE0A1AE39752D09A12903B37 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				43F9414E8059746ED3EBDAD7 /* AppDelegate.swift in Sources */,
 				9F4E033BB7AC28C7D16F1062 /* CalendarMonitor.swift in Sources */,
+				6FAD1F1C1041E9D314F48D06 /* LaunchAtLogin.swift in Sources */,
+				EAD1F71E33AC5F424E46F822 /* MeetingLinkDetector.swift in Sources */,
 				6DE9F5CD11E5F0970B96F277 /* OverlayView.swift in Sources */,
 				F99FAB063B32A9151EB51D8F /* OverlayWindowController.swift in Sources */,
+				F92F9E0D9E4098EEFFF5F9A6 /* Preferences.swift in Sources */,
 				486D6378DA016078C42B4FCB /* PunctualApp.swift in Sources */,
 				185D8965B503020AF55B352E /* StatusBarController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B73A0C3347E46F1A98B338EA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				940DBCBA3B6D51FBE60EC58D /* MeetingLinkDetectorTests.swift in Sources */,
+				7895438A32479D182347CC46 /* PreferencesTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0439B42FFB20BFCEB84C3ADB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A3EC3764FFB969BFDF7979BF /* PunctualWidget */;
+			targetProxy = C48D05C4D46856DDE1FAF12F /* PBXContainerItemProxy */;
+		};
+		697626382816E73DAE5C02B7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1171AAFADBD850C1482C3983 /* Punctual */;
+			targetProxy = 7D8C3C6EC755D0BF266F489A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0A835C28BACCB626F4270D24 /* Debug */ = {
@@ -137,6 +353,7 @@
 				CODE_SIGN_ENTITLEMENTS = Punctual/Resources/Punctual.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_TESTABILITY = YES;
 				INFOPLIST_FILE = Punctual/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -149,6 +366,43 @@
 			};
 			name = Debug;
 		};
+		1160D8D4FB2BB266355095E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pducolin.PunctualTests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Punctual.app/Contents/MacOS/Punctual";
+			};
+			name = Debug;
+		};
+		40B3FEFE30F7EDCEE19DC634 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = PunctualWidget/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pducolin.Punctual.PunctualWidget;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
 		64EC078EE96EF1811D2D5CA8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -156,6 +410,7 @@
 				CODE_SIGN_ENTITLEMENTS = Punctual/Resources/Punctual.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_TESTABILITY = YES;
 				INFOPLIST_FILE = Punctual/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -163,6 +418,24 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pducolin.Punctual;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		742267181EEF4E2049422388 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = PunctualWidget/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pducolin.Punctual.PunctualWidget;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
 			};
@@ -221,6 +494,25 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		BF1CB86BE2AEFF4A4E2A54A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pducolin.PunctualTests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Punctual.app/Contents/MacOS/Punctual";
 			};
 			name = Release;
 		};
@@ -290,11 +582,29 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		330E98548ABE9EE7141E305A /* Build configuration list for PBXNativeTarget "PunctualTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1160D8D4FB2BB266355095E1 /* Debug */,
+				BF1CB86BE2AEFF4A4E2A54A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		4A92BCAC35627B7C3D0E198E /* Build configuration list for PBXNativeTarget "Punctual" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0A835C28BACCB626F4270D24 /* Debug */,
 				64EC078EE96EF1811D2D5CA8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		508729BB6D81C29F96849CCE /* Build configuration list for PBXNativeTarget "PunctualWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40B3FEFE30F7EDCEE19DC634 /* Debug */,
+				742267181EEF4E2049422388 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

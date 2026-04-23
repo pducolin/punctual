@@ -26,7 +26,7 @@ struct MeetingLinkDetector {
         (#"https://teams\.live\.com/meet/[^\s"'>]+"#, .teams),
         (#"https://[\w-]+\.webex\.com/[^\s"'>]+"#, .webex),
         (#"https://meet\.around\.co/[^\s"'>]+"#, .around),
-        (#"https://[\w-]*whereby\.com/[^\s"'>]+"#, .whereby),
+        (#"https://[\w.-]*whereby\.com/[^\s"'>]+"#, .whereby),
         (#"https://meet\.jit\.si/[^\s"'>]+"#, .jitsi),
         (#"https://bluejeans\.com/[^\s"'>]+"#, .bluejeans),
         (#"https://global\.gotomeeting\.com/join/[^\s"'>]+"#, .gotomeeting),
@@ -44,7 +44,7 @@ struct MeetingLinkDetector {
         return nil
     }
 
-    private static func match(_ text: String) -> MeetingLink? {
+    static func match(_ text: String) -> MeetingLink? {
         for (pattern, service) in servicePatterns {
             if let range = text.range(of: pattern, options: .regularExpression),
                let url = URL(string: String(text[range])) {
