@@ -1,3 +1,4 @@
+import EventKit
 import XCTest
 @testable import Punctual
 
