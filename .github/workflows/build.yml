@@ -46,9 +46,29 @@ jobs:
             -scheme Punctual \
             -destination 'platform=macOS,arch=arm64' \
             -derivedDataPath .build \
+            -enableCodeCoverage YES \
+            -resultBundlePath .build/TestResults.xcresult \
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
+
+      - name: Generate coverage report
+        run: |
+          xcrun xccov view --report --json .build/TestResults.xcresult > .build/coverage.json
+          xcrun xccov view --report .build/TestResults.xcresult | tee .build/coverage.txt
+          echo "### Coverage summary" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          xcrun xccov view --report .build/TestResults.xcresult >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ github.sha }}
+          path: |
+            .build/coverage.json
+            .build/coverage.txt
+          retention-days: 30
 
       - name: Zip app bundle
         run: |
