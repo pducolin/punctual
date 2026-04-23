@@ -1,4 +1,4 @@
-name: Build
+name: Test
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  build:
-    name: Build macOS app
+  test:
+    name: Run unit tests
     runs-on: macos-15
 
     steps:
@@ -27,26 +27,33 @@ jobs:
       - name: Generate Xcode project
         run: xcodegen generate
 
-      - name: Build
+      - name: Test
         run: |
-          xcodebuild build \
+          xcodebuild test \
             -project Punctual.xcodeproj \
             -scheme Punctual \
-            -configuration Release \
             -destination 'platform=macOS,arch=arm64' \
             -derivedDataPath .build \
+            -enableCodeCoverage YES \
+            -resultBundlePath .build/TestResults.xcresult \
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
 
-      - name: Zip app bundle
+      - name: Generate coverage report
         run: |
-          cd .build/Build/Products/Release
-          zip -r Punctual.zip Punctual.app
+          xcrun xccov view --report --json .build/TestResults.xcresult > .build/coverage.json
+          xcrun xccov view --report .build/TestResults.xcresult | tee .build/coverage.txt
+          echo "### Coverage summary" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          xcrun xccov view --report .build/TestResults.xcresult >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
 
-      - name: Upload artifact
+      - name: Upload coverage report
         uses: actions/upload-artifact@v7
         with:
-          name: Punctual-${{ github.sha }}
-          path: .build/Build/Products/Release/Punctual.zip
+          name: coverage-${{ github.sha }}
+          path: |
+            .build/coverage.json
+            .build/coverage.txt
           retention-days: 30
