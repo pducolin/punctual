@@ -1,18 +1,20 @@
 import Foundation
 
 enum Preferences {
+    static var defaults: UserDefaults = .standard
+
     private static let warningMinutesListKey = "warningMinutesList"
     private static let disabledCalendarIDsKey = "disabledCalendarIDs"
     private static let soundEnabledKey = "soundEnabled"
 
     static var warningMinutesList: Set<Int> {
         get {
-            guard let arr = UserDefaults.standard.array(forKey: warningMinutesListKey) as? [Int],
+            guard let arr = defaults.array(forKey: warningMinutesListKey) as? [Int],
                   !arr.isEmpty else { return [2] }
             return Set(arr)
         }
         set {
-            UserDefaults.standard.set(Array(newValue), forKey: warningMinutesListKey)
+            defaults.set(Array(newValue), forKey: warningMinutesListKey)
         }
     }
 
@@ -29,11 +31,11 @@ enum Preferences {
 
     static var disabledCalendarIDs: Set<String> {
         get {
-            let arr = UserDefaults.standard.stringArray(forKey: disabledCalendarIDsKey) ?? []
+            let arr = defaults.stringArray(forKey: disabledCalendarIDsKey) ?? []
             return Set(arr)
         }
         set {
-            UserDefaults.standard.set(Array(newValue), forKey: disabledCalendarIDsKey)
+            defaults.set(Array(newValue), forKey: disabledCalendarIDsKey)
         }
     }
 
@@ -45,7 +47,7 @@ enum Preferences {
 
     // Defaults to true — use object(forKey:) so we can distinguish unset from explicit false
     static var soundEnabled: Bool {
-        get { UserDefaults.standard.object(forKey: soundEnabledKey) as? Bool ?? true }
-        set { UserDefaults.standard.set(newValue, forKey: soundEnabledKey) }
+        get { defaults.object(forKey: soundEnabledKey) as? Bool ?? true }
+        set { defaults.set(newValue, forKey: soundEnabledKey) }
     }
 }

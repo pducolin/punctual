@@ -44,7 +44,7 @@ struct MeetingLinkDetector {
         return nil
     }
 
-    private static func match(_ text: String) -> MeetingLink? {
+    static func match(_ text: String) -> MeetingLink? {
         for (pattern, service) in servicePatterns {
             if let range = text.range(of: pattern, options: .regularExpression),
                let url = URL(string: String(text[range])) {

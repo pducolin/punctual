@@ -39,6 +39,17 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
 
+      - name: Test
+        run: |
+          xcodebuild test \
+            -project Punctual.xcodeproj \
+            -scheme Punctual \
+            -destination 'platform=macOS,arch=arm64' \
+            -derivedDataPath .build \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
       - name: Zip app bundle
         run: |
           cd .build/Build/Products/Debug
