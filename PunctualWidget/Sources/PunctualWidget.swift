@@ -10,7 +10,7 @@ struct UpcomingEntry: TimelineEntry {
 }
 
 struct EventSnapshot: Identifiable {
-    var id: String { "\(title)_\(startDate.timeIntervalSince1970)" }
+    let id: String
     let title: String
     let startDate: Date
     let calendarTitle: String?
@@ -22,9 +22,9 @@ struct EventSnapshot: Identifiable {
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> UpcomingEntry {
         UpcomingEntry(date: Date(), events: [
-            EventSnapshot(title: "Team Standup", startDate: Date().addingTimeInterval(12 * 60), calendarTitle: "Work", hasVideoLink: true),
-            EventSnapshot(title: "Design Review", startDate: Date().addingTimeInterval(90 * 60), calendarTitle: "Work", hasVideoLink: false),
-            EventSnapshot(title: "1:1 with Manager", startDate: Date().addingTimeInterval(150 * 60), calendarTitle: "Work", hasVideoLink: true),
+            EventSnapshot(id: "1", title: "Team Standup", startDate: Date().addingTimeInterval(12 * 60), calendarTitle: "Work", hasVideoLink: true),
+            EventSnapshot(id: "2", title: "Design Review", startDate: Date().addingTimeInterval(90 * 60), calendarTitle: "Work", hasVideoLink: false),
+            EventSnapshot(id: "3", title: "1:1 with Manager", startDate: Date().addingTimeInterval(150 * 60), calendarTitle: "Work", hasVideoLink: true),
         ])
     }
 
@@ -50,6 +50,7 @@ struct Provider: TimelineProvider {
             .prefix(3)
             .map { event in
                 EventSnapshot(
+                    id: event.eventIdentifier ?? UUID().uuidString,
                     title: event.title ?? "Untitled",
                     startDate: event.startDate,
                     calendarTitle: event.calendar?.title,
@@ -58,12 +59,25 @@ struct Provider: TimelineProvider {
             }
     }
 
+    // Mirrors MeetingLinkDetector patterns — HTTPS only, anchored to known paths
+    private static let videoPatterns: [String] = [
+        #"https://[\w.-]*zoom\.us/j/"#,
+        #"https://meet\.google\.com/[a-z-]"#,
+        #"https://teams\.microsoft\.com/l/meetup-join/"#,
+        #"https://teams\.live\.com/meet/"#,
+        #"https://[\w-]+\.webex\.com/"#,
+        #"https://meet\.around\.co/"#,
+        #"https://[\w.-]*whereby\.com/"#,
+        #"https://meet\.jit\.si/"#,
+        #"https://bluejeans\.com/"#,
+        #"https://global\.gotomeeting\.com/join/"#,
+    ]
+
     private func hasVideoLink(_ event: EKEvent) -> Bool {
-        let patterns = ["zoom.us/j/", "meet.google.com/", "teams.microsoft.com/",
-                        "webex.com/", "meet.around.co/", "whereby.com/",
-                        "meet.jit.si/", "bluejeans.com/", "gotomeeting.com/"]
         let texts = [event.url?.absoluteString, event.location, event.notes].compactMap { $0 }
-        return texts.contains { text in patterns.contains { text.contains($0) } }
+        return texts.contains { text in
+            Self.videoPatterns.contains { text.range(of: $0, options: .regularExpression) != nil }
+        }
     }
 }
 

@@ -50,8 +50,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG="v$(date -u +%Y.%m.%d)-${GITHUB_SHA::7}"
-          NOTES="$(git log -1 --pretty=%B)"
+          git log -1 --pretty=%B > release-notes.txt
           gh release create "$TAG" \
             --title "Punctual $TAG" \
-            --notes "$NOTES" \
+            --notes-file release-notes.txt \
             .build/Build/Products/Release/Punctual.zip#Punctual.zip

@@ -6,9 +6,25 @@ class CalendarMonitor {
     private var timer: Timer?
     private var shownReminders: [String: Set<Int>] = [:]
     private var snoozedEvents: [String: Date] = [:]
-    private(set) var isAuthorized = false
+    private(set) var isAuthorized = EKEventStore.authorizationStatus(for: .event) == .fullAccess
 
     var onUpcomingEvent: ((EKEvent) -> Void)?
+
+    func resync() {
+        isAuthorized = EKEventStore.authorizationStatus(for: .event) == .fullAccess
+        guard isAuthorized else { return }
+        if timer == nil {
+            startPolling()
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(storeChanged),
+                name: .EKEventStoreChanged,
+                object: store
+            )
+        } else {
+            checkUpcomingEvents()
+        }
+    }
 
     func snooze(eventID: String, for duration: TimeInterval = 5 * 60) {
         snoozedEvents[eventID] = Date().addingTimeInterval(duration)
@@ -35,13 +51,14 @@ class CalendarMonitor {
         store.requestFullAccessToEvents { [weak self] granted, _ in
             guard granted else { return }
             DispatchQueue.main.async {
-                self?.isAuthorized = true
-                self?.startPolling()
+                guard let self else { return }
+                self.isAuthorized = true
+                self.startPolling()
                 NotificationCenter.default.addObserver(
-                    self as Any,
+                    self,
                     selector: #selector(CalendarMonitor.storeChanged),
                     name: .EKEventStoreChanged,
-                    object: self?.store
+                    object: self.store
                 )
             }
         }
@@ -68,6 +85,10 @@ class CalendarMonitor {
         let events = store.events(matching: predicate)
 
         snoozedEvents = snoozedEvents.filter { $0.value > now }
+
+        // Drop reminder state for events no longer in the look-ahead window so the dict doesn't grow forever
+        let activeIDs = Set(events.compactMap(\.eventIdentifier))
+        shownReminders = shownReminders.filter { activeIDs.contains($0.key) }
 
         let disabledCalendars = Preferences.disabledCalendarIDs
         for event in events where !event.isAllDay {

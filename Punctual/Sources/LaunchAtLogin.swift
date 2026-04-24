@@ -5,15 +5,19 @@ enum LaunchAtLogin {
         SMAppService.mainApp.status == .enabled
     }
 
-    static func enable() {
-        try? SMAppService.mainApp.register()
+    @discardableResult
+    static func enable() -> Error? {
+        do { try SMAppService.mainApp.register(); return nil }
+        catch { return error }
     }
 
-    static func disable() {
-        try? SMAppService.mainApp.unregister()
+    @discardableResult
+    static func disable() -> Error? {
+        do { try SMAppService.mainApp.unregister(); return nil }
+        catch { return error }
     }
 
     static func toggle() {
-        isEnabled ? disable() : enable()
+        if isEnabled { disable() } else { enable() }
     }
 }
