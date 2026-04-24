@@ -6,6 +6,7 @@ class StatusBarController: NSObject, NSMenuDelegate {
     private let menu = NSMenu()
     private var reminderMenuItems: [NSMenuItem] = []
     private var dynamicMenuItems: [NSMenuItem] = []
+    private let upcomingSectionSentinel = NSMenuItem.separator()
     private var calendarsMenuItem = NSMenuItem(title: "Calendars", action: nil, keyEquivalent: "")
     private var soundMenuItem = NSMenuItem(title: "Sound", action: nil, keyEquivalent: "")
     private var launchAtLoginMenuItem = NSMenuItem(title: "Launch at Login", action: nil, keyEquivalent: "")
@@ -13,6 +14,7 @@ class StatusBarController: NSObject, NSMenuDelegate {
 
     var nextEventsProvider: (() -> [EKEvent])?
     var calendarsProvider: (() -> [EKCalendar])?
+    var resyncAction: (() -> Void)?
 
     override init() {
         super.init()
@@ -32,8 +34,8 @@ class StatusBarController: NSObject, NSMenuDelegate {
         title.isEnabled = false
         menu.addItem(title)
         menu.addItem(.separator())
-        // Dynamic upcoming items are inserted at index 2 (between these two separators)
-        menu.addItem(.separator())
+        // Dynamic upcoming items are inserted just before this sentinel separator
+        menu.addItem(upcomingSectionSentinel)
 
         let remindItem = NSMenuItem(title: "Remind me", action: nil, keyEquivalent: "")
         let remindMenu = NSMenu()
@@ -58,6 +60,10 @@ class StatusBarController: NSObject, NSMenuDelegate {
         launchAtLoginMenuItem.action = #selector(toggleLaunchAtLogin)
         launchAtLoginMenuItem.target = self
         menu.addItem(launchAtLoginMenuItem)
+
+        let resyncItem = NSMenuItem(title: "Resync Calendar", action: #selector(performResync), keyEquivalent: "r")
+        resyncItem.target = self
+        menu.addItem(resyncItem)
 
         menu.addItem(.separator())
         menu.addItem(NSMenuItem(title: "Quit Punctual", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
@@ -120,7 +126,8 @@ class StatusBarController: NSObject, NSMenuDelegate {
         dynamicMenuItems.removeAll()
 
         let events = nextEventsProvider?() ?? []
-        let insertionIndex = 2 // between the two separators at the top
+        let insertionIndex = menu.index(of: upcomingSectionSentinel)
+        guard insertionIndex != -1 else { return }
 
         if events.isEmpty {
             let item = NSMenuItem(title: "No upcoming meetings", action: nil, keyEquivalent: "")
@@ -182,5 +189,10 @@ class StatusBarController: NSObject, NSMenuDelegate {
 
     @objc private func toggleLaunchAtLogin() {
         LaunchAtLogin.toggle()
+    }
+
+    @objc private func performResync() {
+        resyncAction?()
+        updateCountdown()
     }
 }

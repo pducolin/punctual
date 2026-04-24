@@ -96,7 +96,7 @@ struct OverlayView: View {
             .padding(.top, 4)
         }
         .padding(20)
-        .frame(width: 400)
+        .frame(minWidth: 400)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
     }
 }

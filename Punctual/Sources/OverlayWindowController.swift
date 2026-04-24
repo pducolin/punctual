@@ -11,8 +11,8 @@ class OverlayWindowController: NSObject {
     }
 
     func show(event: EKEvent, onSnooze: @escaping (_ minutes: Int) -> Void) {
-        let mouseLocation = NSEvent.mouseLocation
-        let screen = NSScreen.screens.first { $0.frame.contains(mouseLocation) } ?? NSScreen.screens[0]
+        guard let screen = NSScreen.screens.first(where: { $0.frame.contains(NSEvent.mouseLocation) })
+                ?? NSScreen.screens.first else { return }
 
         let view = OverlayView(
             event: event,
@@ -20,9 +20,13 @@ class OverlayWindowController: NSObject {
             onSnooze: { [weak self] minutes in self?.window.orderOut(nil); onSnooze(minutes) }
         )
 
-        window.contentView = NSHostingView(rootView: view)
+        let hosting = NSHostingView(rootView: view)
+        hosting.sizingOptions = .preferredContentSize
+        window.contentView = hosting
 
-        let windowSize = CGSize(width: 440, height: 180)
+        // Size to fit content, then center on screen
+        let fittingSize = hosting.fittingSize
+        let windowSize = CGSize(width: max(440, fittingSize.width), height: max(120, fittingSize.height))
         let origin = CGPoint(
             x: screen.visibleFrame.midX - windowSize.width / 2,
             y: screen.visibleFrame.midY - windowSize.height / 2
